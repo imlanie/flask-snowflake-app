@@ -21,7 +21,8 @@ conn = snowflake.connector.connect(
     role='ACCOUNTADMIN',
     # region='us-west-2',
     warehouse='COMPUTE_WH',
-    database='SAMPLE'
+    schema='TPCH_SF10',
+    database='SNOWFLAKE_SAMPLE_DATA'
 
 )
 
@@ -60,7 +61,7 @@ def retrieve():
     # get_page_arg defaults to page 1, per_page of 10
     # page, per_page, offset = get_page_args()
 
-    sql = "SELECT * FROM CUSTOMERS limit 100;"
+    sql = "SELECT * FROM CUSTOMER limit 100;"
     print(sql)
 
     cursor = conn.cursor()
@@ -207,7 +208,7 @@ def phone():
     event = request.environ.get("awsgi.event", {})
     print(event)
 
-    sql = "SELECT * FROM CUSTOMERS WHERE "
+    sql = "SELECT * FROM CUSTOMER WHERE "
 
     #phone_number = "'18-493-856-5843'"
     filterby = request.form['HTMLfilterby']
@@ -233,11 +234,18 @@ def phone():
     print(sql)
 
     cursor = conn.cursor()
-    cursor.execute(sql)
+    try:
 
-    rows = cursor.fetchall()
+        cursor.execute(sql)
+        rows = cursor.fetchall()
+        return render_template('home.html', data=rows)
 
-    return render_template('home.html', data=rows)
+    except Exception as ex:
+
+        print("Exception occurred: " + str(ex))
+        return_msg = "Item not found"
+        options = 'return to home'
+        return render_template("notice.html", notice_msg=return_msg, options=options)
 
 
 @app.route('/home', methods=["GET", "POST"])
@@ -255,7 +263,7 @@ def home():
     #     print(type(encodedPng))
     #     print(type(encodedPngnew))
 
-    sql = "SELECT * FROM CUSTOMERS limit 1000;"
+    sql = "SELECT * FROM CUSTOMER limit 1000;"
     print(sql)
 
     cursor = conn.cursor()
