@@ -1,0 +1,25 @@
+<form id="submitIt" name="submitIt" action="/GetFile" method="Post" onsubmit="return validate(this)">
+    {{ pagination.info }}
+    <table>
+        <tr>
+            <th>Select</th>
+            <th>Filename</th>
+            <th>Operator</th>
+        </tr>
+        {% for item in List %}
+        <tr>
+            <td>
+                <input type="checkbox" name="FileName" value="{{ item }}"><br>
+            </td>
+            <td>
+                <name="FileName1" id="file" value="{{ item }}" <br>
+            </td>
+            <td>
+                {{fs.get_last_version(file).Operator}}<br>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {{ pagination.links }}
+    <input type="submit" value="Download">
+</form>

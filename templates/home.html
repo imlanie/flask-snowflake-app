@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Home</title>
+
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1,
+        h2,
+        h3,
+        p,
+        form {
+
+            text-align: center;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: dodgerblue;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+
+        .pagination-page-info {
+            padding: .6em;
+            padding-left: 0;
+            width: 40em;
+            margin: .5em;
+            margin-left: 0;
+            font-size: 12px;
+        }
+
+        .pagination-page-info b {
+            color: black;
+            background: #6aa6ed;
+            padding-left: 2px;
+            padding: .1em .25em;
+            font-size: 150%;
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+
+    <h1><span>
+            Snowflake Customer Data &nbsp;
+            <img src="https://imlanie.s3.us-west-2.amazonaws.com/snowflake.png" background:color="transparent"
+                alt="Snowflake WD" width="50" height="50">
+        </span>
+    </h1>
+
+    <form method="post" action="phone">
+        <label for="filterby">Filter by:</label>
+        <select id="filterby" name="HTMLfilterby">
+            <option value="C_CUSTKEY">Customer ID</option>
+            <option value="C_NAME">Customer Name</option>
+            <option value="C_PHONE">Phone</option>
+            <option value="C_ACCTBAL">Balance</option>
+        </select>
+
+        <input id="filtervalue" type="text" placeholder="filtervalue" name="HTMLfiltervalue" value="{{ filtervalue }}">
+        <input id="btnfiltervalue" type="submit" value="Submit">
+    </form>
+
+    <br>
+
+    <form method="post" action="home">
+        <input id="btnhome" type="submit" value="Start Over">
+    </form>
+
+    <!--button onclick="sortTable()">Sort</button-->
+
+    <br>
+
+
+    <table id="myTable">
+        <thead>
+            <tr>
+                <th>Customer ID</th>
+                <th>Customer Name</th>
+
+                <th>Customer Phone</th>
+                <th>Customer Balance</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for n in data %}
+            <!--tr>
+                     {% for a in n %}
+                    <td>
+                        {{a}}
+                        </td>
+                     {% endfor %}
+                     
+                     </tr-->
+
+            <!--td> <a href="/delete/{{ n['Phone'] }}">Supprimer</a> <td></td-->
+
+            <tr>
+
+                <td>{{n[0]}}</td>
+                <td>{{n[1]}}</td>
+
+                <td>{{n[4]}}</td>
+                <td>{{n[5]}}</td>
+
+
+            </tr>
+
+
+
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+    <script>
+        function sortTable() {
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = document.getElementById("myTable");
+            switching = true;
+            /*Make a loop that will continue until
+            no switching has been done:*/
+            while (switching) {
+                //start by saying: no switching is done:
+                switching = false;
+                rows = table.rows;
+                /*Loop through all table rows (except the
+                first, which contains table headers):*/
+                for (i = 1; i < (rows.length - 1); i++) {
+                    //start by saying there should be no switching:
+                    shouldSwitch = false;
+                    /*Get the two elements you want to compare,
+                    one from current row and one from the next:*/
+                    x = rows[i].getElementsByTagName("TD")[2];
+                    y = rows[i + 1].getElementsByTagName("TD")[2];
+                    //check if the two rows should switch place:
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        //if so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+                if (shouldSwitch) {
+                    /*If a switch has been marked, make the switch
+                    and mark that a switch has been done:*/
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
